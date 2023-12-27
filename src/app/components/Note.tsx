@@ -25,7 +25,7 @@ const Note = ({ note, onDelete, onImageDelete }: any) => {
   const [mutableNote, setMutableNote] = useState(note)
   const [isEdited, setIsEdited] = useState(true)
 
-
+//  /prisma/6574cf47f73eea0a045c7dd0
     
   if(isEdited){
     setMutableNote({ id, mutableTitle, mutableContent, mutableUrls, mutableImages, files });
