@@ -14,11 +14,11 @@ import Note from './Note';
 import { TbTrash } from 'react-icons/tb';
 import Image from 'next/image';
 import apiUrl from '@/app/config'
-import downloadWord from '../../../public/images/downloadWord.png'
-import downloadExcel from '../../../public/images/excel.png'
-import downloadPPT from '../../../public/images/ppt.png'
-import downloadFile from '../../../public/images/file.png'
-import downloadPDF from '../../../public/images/pdf.png'
+import downloadWord from '../public/images/downloadWord.png'
+import downloadExcel from '../public/images/excel.png'
+import downloadPPT from '../public/images/ppt.png'
+import downloadFile from '../public/images/file.png'
+import downloadPDF from '../public/images/pdf.png'
 import { AiOutlineEdit } from 'react-icons/ai';
 
 interface image{
