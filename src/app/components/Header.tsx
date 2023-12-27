@@ -3,8 +3,8 @@ import exp from 'constants';
 import { useScrollTop } from './use-scroll-top';
 import Link from 'next/link';
 import Image from 'next/image';
-import plumsTitle from '../../../public/images/plums-title.png';
-import plumsProfile from '../../../public/images/plum_profile.svg';
+import plumsTitle from '../public/images/plums-title.png';
+import plumsProfile from '../public/images/plum_profile.svg';
 
 import CardModalNewTopic from '../components/ModalNewTopic';
 

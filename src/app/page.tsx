@@ -8,8 +8,8 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import apiUrl from './config';
 import CardModalEditTopic from './components/ModalEditTopic';
 import Image from 'next/image';
-import plumMain from '/public/images/Plum.svg';
-import topMain from '/public/images/topMain.svg';
+import plumMain from './public/images/Plum.svg';
+import topMain from './public/images/topMain.svg';
 import { useUser } from '@auth0/nextjs-auth0/client';
 function Home() {
   const [openModalEditTopic, setOpenModalEditTopic] = useState(false);
