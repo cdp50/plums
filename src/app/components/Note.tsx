@@ -9,11 +9,11 @@ import { AiOutlineEdit } from "react-icons/ai";
 import Link from 'next/link';
 import Image from 'next/image';
 import apiUrl from '../config';
-import downloadWord from '../../../public/images/downloadWord.png'
-import downloadExcel from '../../../public/images/excel.png'
-import downloadPPT from '../../../public/images/ppt.png'
-import downloadFile from '../../../public/images/file.png'
-import downloadPDF from '../../../public/images/pdf.png'
+import downloadWord from '../public/images/downloadWord.png'
+import downloadExcel from '../public/images/excel.png'
+import downloadPPT from '../public/images/ppt.png'
+import downloadFile from '../public/images/file.png'
+import downloadPDF from '../public/images/pdf.png'
 
 const Note = ({ note, onDelete, onImageDelete }: any) => {
   const { id, title, content, urls, images, files } = note;
