@@ -17,7 +17,8 @@ export const POST = async (req: NextRequest) => {
           file,
           fileNote,
           content,
-          selectedTags } = body;
+          selectedTags,
+          user } = body;
             
             //handle if tag is empty
             let tagInfoFormat;
@@ -45,7 +46,12 @@ export const POST = async (req: NextRequest) => {
                   images: { create: imgInfoFormat },
                   files: { create: fileInfoFormat },
                   urls: { create: urlInfoFormat },
-                  authorId: "655bdd221f7696eacd122822", 
+                  // authorId: "655bdd221f7696eacd122822", 
+                  author: {
+                    connect: {
+                      email:user.email
+                    }
+                  }
                 },
               });
         
@@ -163,9 +169,4 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json({ message: 'Error fetching notes by tag', error }, { status: 500 });
   }
 };
-
-
-
-
-
 

@@ -22,6 +22,7 @@ import apiUrl from '../config';
 interface CardModalProps {
   onCloseModal: () => void;
   showCloseButton?: boolean;
+  user: any;
 }
 interface tagResponse {
   id: string;
@@ -31,6 +32,7 @@ interface tagResponse {
 function CardModalNote({
   onCloseModal,
   showCloseButton = true,
+  user
 }: CardModalProps) {
   const [email, setEmail] = useState('');
   const [title, setTitle] = useState('');
@@ -52,16 +54,20 @@ function CardModalNote({
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`${apiUrl}api/tag`, {
-        cache: 'no-store',
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      if (user?.email) {
+        const email = user.email;
+        const result = await fetch(`${apiUrl}api/tag?userEmail=${encodeURIComponent(email)}`, {
+          cache: 'no-store',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-      const tagsData: tagResponse[] = await result.json();
-      setTags(tagsData);
+        const tagsData: tagResponse[] = await result.json();
+        console.log("tagsData", tagsData)
+        setTags(tagsData);
+      }
     };
     fetchData();
   }, []); // Run once when the component mounts
@@ -164,6 +170,7 @@ function CardModalNote({
           fileNote,
           content,
           selectedTags,
+          user
         }),
       });
       const data = await response.json();

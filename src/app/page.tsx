@@ -16,6 +16,9 @@ function Home() {
   const [tagIdToDelete, setTagIdToDelete] = useState<string | null>(null);
 
   const { user, error, isLoading } = useUser();
+  if (user?.email){
+    console.log('este es el user: ', user)
+  }
 
   interface tagResponse {
     id: string;
@@ -23,26 +26,58 @@ function Home() {
     description: string;
     image: string;
     authorId: string;
-  }
+  } 
 
   const [tags, setTags] = useState<tagResponse[]>([]);
+  let loadingToggle = true;
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetch(`${apiUrl}api/tag`, {
-        cache: 'no-store',
-        method: 'GET',
+    const fetchTagsByUser = async () => {
+      if (user?.email) {
+        const email = user.email;
+        const result = await fetch(`${apiUrl}api/tag?userEmail=${encodeURIComponent(email)}`, {
+          cache: 'no-store',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (result.ok) {
+          const data = await result.json();
+          const tagsData: tagResponse[] = data.tags;
+          setTags(tagsData);
+        } else {
+          console.error('Error fetching tags:', result.statusText);
+        }
+      }
+    };
+  
+    const upsertUserAndFetchTags = async () => {
+      const response = await fetch(`${apiUrl}api/user`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ user }),
       });
-
-      const tagsData: tagResponse[] = await result.json();
-      setTags(tagsData);
+  
+      if (response.ok) {
+        console.log('upsert user successful');
+        await fetchTagsByUser();
+      } else {
+        console.error('Error upserting user:', response.statusText);
+      }
     };
-    fetchData();
-  }, [tagIdToDelete]); // Run once when the component mounts
-  console.log(tags);
+  
+    upsertUserAndFetchTags(); // Call the function when the component mounts
+  
+    // Any additional code specific to your useEffect, if needed
+  
+  }, [tagIdToDelete, user]);
+  
+
+  
 
   const deleteIt = async (tagId: string) => {
     try {
@@ -68,14 +103,17 @@ function Home() {
   
   
 
-  if (tags.length === 0) {
-    return (
-      <div className="h-full flex items-center justify-center p-4">
-        <Spinner size="lg" />
-        <p>Loading... </p>
-      </div>
-    );
-  }
+  // if (loadingToggle) {
+  //   return (
+  //     <div className="h-full flex items-center justify-center p-4">
+  //       <Spinner size="lg" />
+  //       <p>Loading... </p>
+  //     </div>
+  //   );
+  // }
+
+
+
 
   
   if(isLoading){
@@ -85,6 +123,9 @@ function Home() {
     // return the error
   }
   if(user){
+    console.log("there is a user")
+
+
     return (
       <main className="flex flex-col items-center justify-center ">
         <br />
@@ -133,8 +174,8 @@ function Home() {
         </div>
       </main>
     );
-  }
-
+  }else {
+    console.log("there's no user")
   return (
     <main className="absolute top-0 left-0 right-0 bottom-0 bg-white flex items-center justify-center flex-col text-center">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome to Plums</h1>
@@ -159,5 +200,8 @@ function Home() {
     </main>
   );
 }
+}
 
 export default Home;
+
+

@@ -34,21 +34,24 @@ function Header() {
     image: string;
     authorId: string;
   }
-
+  const { user, error, isLoading } = useUser();
   const [tags, setTags] = useState<tagResponse[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`${apiUrl}api/tag`, {
-        cache: 'no-store',
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const tagsData: tagResponse[] = await result.json();
-      setTags(tagsData);
+      if (user?.email) {
+        const email = user.email;
+        const result = await fetch(`${apiUrl}api/tag?userEmail=${encodeURIComponent(email)}`, {
+          cache: 'no-store',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        const tagsData: tagResponse[] = await result.json();
+        setTags(tagsData);
+      }
     };
     fetchData();
   }, [tagIdToDelete]); // Run once when the component mounts
@@ -58,7 +61,7 @@ function Header() {
     setTags((prevTags) => [...prevTags, newTag]);
   };
   
-  const { user, error, isLoading } = useUser();
+  
   let profileImg;
   let userInfo;
   if(!isLoading){
@@ -67,6 +70,7 @@ function Header() {
   } else {
     profileImg = plumsProfile;
   }
+
   if(user){
     return (
       <header className="sticky top-0 bg-white z-50">
@@ -100,6 +104,7 @@ function Header() {
                   onCloseModal={() => setOpenModalNewTopic(false)}
                   showCloseButton={false}
                   onNewTag={handleNewTag}
+                  user={user}
                 />
               )}
   
@@ -114,6 +119,7 @@ function Header() {
                 <CardModal
                   onCloseModal={() => setOpenModalNewNote(false)}
                   showCloseButton={false}
+                  user={user}
                 />
               )}
   

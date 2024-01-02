@@ -308,7 +308,7 @@ const handleEdit = async () => {
             imageStates.map((image, index) => {
               return (
               <>
-              <div className=' relative group/imgTrash'>
+              <div key={image.id} className=' relative group/imgTrash'>
               <a onClick={()=> setImageModal(true)} > 
                 
                   <Image width={128} height={128} src={image.image} alt={image.description} />

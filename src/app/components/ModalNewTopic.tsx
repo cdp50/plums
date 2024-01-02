@@ -23,7 +23,9 @@ function CardModalNewTopic({
   onCloseModal,
   showCloseButton = true,
   onNewTag,
+  user
 }: any) {
+
   const [email, setEmail] = useState('');
 
   function onClose() {
@@ -79,7 +81,7 @@ function CardModalNewTopic({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, image, description }),
+        body: JSON.stringify({ name, image, description, user }),
       });
       const data = await response.json();
       console.log('the answer from the api after creating a new tag', data);

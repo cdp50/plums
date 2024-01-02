@@ -1,13 +1,12 @@
 import prisma from "@/app/data";
-import { Tag } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
-import React from 'react'
 
 
 export const POST = async (req: NextRequest) => {
     try {
         const body = await req.json()
-        const { name, image, description} = body;
+        const { name, image, description, user} = body;
+        console.log("the user info", user)
 
         const result = await prisma.tag.create({ 
             data: {
@@ -16,7 +15,7 @@ export const POST = async (req: NextRequest) => {
                 description,
                 author: {
                     connect: {
-                        id:"655bdd221f7696eacd122822"
+                        email: user.email
                     }
                 }
             }
@@ -28,12 +27,32 @@ export const POST = async (req: NextRequest) => {
     }
 }
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
     try {
-        const tags = await prisma.tag.findMany()
 
-        return NextResponse.json(tags)
+        // Convert the URL string to a URL object
+        const url = new URL(req.url);
+        
+        // Extract the userEmail from the search parameters
+        const userEmail = url.searchParams.get('userEmail');
+
+        // using the email get the ID from the user
+        if(userEmail != null){
+          const user = await prisma.user.findUnique({
+            where: {
+              email: userEmail
+            },
+            include: {
+                tags: true
+            }
+          });
+          console.log("the content of get user with tags: ", user)
+
+          return NextResponse.json(user)
+        }
+        
     } catch (err) {
+        console.error("Error GETing tags", err);
         return NextResponse.json({message: "GET Error", err}, {status: 500})
     }
 }
