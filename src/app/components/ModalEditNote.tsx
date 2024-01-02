@@ -337,12 +337,13 @@ const handleEdit = async () => {
                     <textarea name="imageDescription" id="imageDescription" cols={50} rows={2}
                       className='rounded-lg bg-transparent text-white border-2 border-slate-600 p-3 focus:outline-none w-96 pr-11 mx-auto'
                       onChange={(e) => handleImageChange(index, 'description', e.target.value)}
+                      value={image.description}
                     >
-                      {image.description}
+                      
                     </textarea>
 
                   <div className=' mx-auto relative bg-white rounded-[50px]'>
-                    <Image width={384} height={384} src={image.image} alt={image.description} />
+                    <Image width={500} height={500} src={image.image} alt={image.description} />
                   </div>
                 </div>
               </Modal>
